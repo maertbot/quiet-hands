@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiet Hands</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="kicker">Quiet Hands / Maupin school lane</p>
+          <h1>Scope, steel, turrets.</h1>
+        </div>
+        <div class="topbar-strip">
+          <div><span>Stage</span><strong id="stageName">—</strong></div>
+          <div><span>Distance</span><strong id="scenarioDistance">—</strong></div>
+          <div><span>Rounds</span><strong id="shotsRemainingValue">3</strong></div>
+          <div><span>Clears</span><strong id="courseProgressValue">0 / 4</strong></div>
+        </div>
+      </header>
+
+      <section class="hero-grid">
+        <section class="scope-card panel">
+          <div class="scope-head">
+            <div>
+              <p class="kicker">Scope view</p>
+              <h2 id="scenarioName">—</h2>
+            </div>
+            <div class="scope-tags">
+              <span class="tag" id="missionTag">Target: —</span>
+              <span class="tag" id="gradePill">Waiting</span>
+            </div>
+          </div>
+
+          <div class="scope-wrap">
+            <img id="sceneImage" class="scene-image" src="" alt="Maupin canyon shooting lane" />
+            <canvas id="scopeCanvas" width="1600" height="1000" aria-label="Scope view with animal steel targets"></canvas>
+            <div class="scope-hud scope-hud-top">
+              <div><span>Location</span><strong id="locationTag">—</strong></div>
+              <div><span>Conditions</span><strong id="conditionsTag">—</strong></div>
+              <div><span>Status</span><strong id="missionStatusTag">Select target</strong></div>
+            </div>
+            <div class="scope-hud scope-hud-bottom">
+              <div><span>Windage</span><strong id="windCallReadout">0.00 MOA</strong></div>
+              <div><span>Elevation</span><strong id="elevationReadout">Base dope</strong></div>
+              <div><span>Impact</span><strong id="impactReadout">Awaiting shot</strong></div>
+            </div>
+            <div class="scope-controls">
+              <div class="zoom-strip">
+                <span>Magnification</span>
+                <div class="zoom-buttons">
+                  <button class="zoom-btn active" data-zoom-index="0">8x</button>
+                  <button class="zoom-btn" data-zoom-index="1">12x</button>
+                  <button class="zoom-btn" data-zoom-index="2">16x</button>
+                </div>
+              </div>
+              <div class="scope-lockbox">
+                <span>Reticle target</span>
+                <strong id="hoverTargetValue">None</strong>
+                <small>Click to lock plate</small>
+              </div>
+            </div>
+            <div class="scope-tip" id="scopeTip">Move your mouse like the rifle is on a bag, settle the crosshair on the right animal, then click to lock it.</div>
+          </div>
+        </section>
+
+        <aside class="panel mission-card">
+          <div class="mission-top">
+            <div>
+              <p class="kicker">Stage brief</p>
+              <h3 id="objectiveTitle">—</h3>
+            </div>
+            <button id="nextScenarioBtn" class="ghost-button">Next</button>
+          </div>
+
+          <p class="mission-copy" id="objectiveCopy">—</p>
+
+          <div class="mission-facts">
+            <div><span>Target animal</span><strong id="targetAnimalValue">—</strong></div>
+            <div><span>Target plate</span><strong id="targetPlateValue">—</strong></div>
+            <div><span>Density altitude</span><strong id="densityAltitudeValue">—</strong></div>
+            <div><span>Slope</span><strong id="slopeValue">—</strong></div>
+          </div>
+
+          <div class="hint-stack">
+            <div class="hint-box"><span>Mirage</span><p id="mirageHint"></p></div>
+            <div class="hint-box"><span>Flags</span><p id="flagsHint"></p></div>
+            <div class="hint-box"><span>Terrain</span><p id="terrainHint"></p></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="cockpit-grid">
+        <section class="panel dope-card">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">Rifle card</p>
+              <h3 id="rifleName">—</h3>
+            </div>
+            <span class="tag" id="stepLabel">Select → Dial → Fire</span>
+          </div>
+
+          <div class="dope-grid">
+            <div><span>Load</span><strong id="rifleLoad">—</strong></div>
+            <div><span>Zero</span><strong id="zeroValue">—</strong></div>
+            <div><span>Muzzle vel</span><strong id="muzzleVelocityValue">—</strong></div>
+            <div><span>BC</span><strong id="bcValue">—</strong></div>
+            <div><span>Base dope</span><strong id="baseDopeValue">—</strong></div>
+            <div><span>1 mph wind</span><strong id="windUnitValue">—</strong></div>
+            <div><span>Time of flight</span><strong id="tofValue">—</strong></div>
+            <div><span>Impact vel</span><strong id="impactVelocityValue">—</strong></div>
+            <div><span>Energy</span><strong id="impactEnergyValue">—</strong></div>
+            <div><span>Selected steel</span><strong id="selectedTargetValue">None</strong></div>
+          </div>
+        </section>
+
+        <section class="panel turret-card">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">Turrets</p>
+              <h3>Dial your correction</h3>
+            </div>
+          </div>
+
+          <div class="turret-grid">
+            <div class="turret-module">
+              <p class="turret-label">Windage</p>
+              <div class="turret-controls">
+                <button class="turret-btn" data-turret="wind" data-delta="-4">−1.00</button>
+                <button class="turret-btn" data-turret="wind" data-delta="-1">−0.25</button>
+                <div class="turret-dial">
+                  <span>Dialed</span>
+                  <strong id="windDialValue">0.00 MOA</strong>
+                  <small id="windLabel">Center</small>
+                </div>
+                <button class="turret-btn" data-turret="wind" data-delta="1">+0.25</button>
+                <button class="turret-btn" data-turret="wind" data-delta="4">+1.00</button>
+              </div>
+            </div>
+
+            <div class="turret-module">
+              <p class="turret-label">Elevation</p>
+              <div class="turret-controls">
+                <button class="turret-btn" data-turret="elevation" data-delta="-4">−1.00</button>
+                <button class="turret-btn" data-turret="elevation" data-delta="-1">−0.25</button>
+                <div class="turret-dial">
+                  <span>Total dial</span>
+                  <strong id="elevationDialValue">0.00 MOA</strong>
+                  <small id="elevationLabel">Base dope</small>
+                </div>
+                <button class="turret-btn" data-turret="elevation" data-delta="1">+0.25</button>
+                <button class="turret-btn" data-turret="elevation" data-delta="4">+1.00</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-note">
+            <p id="tutorialStatus">Start from the base dope, then use wind clues to decide your turret correction.</p>
+          </div>
+        </section>
+
+        <section class="panel fire-card">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">Shot</p>
+              <h3>Break it clean</h3>
+            </div>
+          </div>
+
+          <div class="breath-meter" aria-hidden="true">
+            <div class="breath-zone"></div>
+            <div id="breathIndicator" class="breath-indicator"></div>
+          </div>
+          <p id="breathReadout" class="muted breath-copy">steady</p>
+
+          <button id="fireBtn" class="primary-button fire-button">Hold to settle, release to fire</button>
+
+          <div class="score-strip">
+            <div><span>Score</span><strong id="scoreValue">0</strong></div>
+            <div><span>Best miss</span><strong id="bestGroupValue">—</strong></div>
+            <div><span>Stage</span><strong id="stageResultValue">In progress</strong></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel report-card">
+        <div class="panel-head">
+          <div>
+            <p class="kicker">After action</p>
+            <h3>Why the shot landed there</h3>
+          </div>
+        </div>
+
+        <div class="report-grid">
+          <div><span>Actual wind</span><strong id="actualWindValue">—</strong></div>
+          <div><span>Wind error</span><strong id="windErrorValue">—</strong></div>
+          <div><span>Elevation error</span><strong id="verticalErrorValue">—</strong></div>
+          <div><span>Impact</span><strong id="impactValue">—</strong></div>
+        </div>
+
+        <p id="replayNarrative" class="report-copy">The scope stays up. The writing just tells you what mattered.</p>
+        <ol id="shotLog" class="shot-log"></ol>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

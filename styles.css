@@ -1,0 +1,415 @@
+:root {
+  --bg: #0f0d0b;
+  --panel: #1c1815;
+  --panel-2: #27211d;
+  --panel-3: #302923;
+  --line: rgba(243, 224, 198, 0.13);
+  --text: #f7efe6;
+  --muted: #bbad9c;
+  --accent: #d7b57f;
+  --accent-2: #88b8d6;
+  --good: #88af77;
+  --bad: #d18a73;
+  --shadow: 0 24px 44px rgba(0, 0, 0, 0.28);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(87, 62, 35, 0.18), transparent 30%),
+    linear-gradient(180deg, #151210, #0f0d0b 48%);
+  color: var(--text);
+}
+
+button, input { font: inherit; }
+h1, h2, h3, p, ol { margin: 0; }
+
+.shell {
+  width: min(1540px, calc(100vw - 20px));
+  margin: 0 auto;
+  padding: 14px 0 28px;
+}
+
+.panel,
+.topbar {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(31, 26, 22, 0.98), rgba(22, 18, 15, 0.98));
+  box-shadow: var(--shadow);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: end;
+  padding: 16px 18px;
+  border-radius: 18px;
+}
+
+.kicker,
+.topbar-strip span,
+.scope-hud span,
+.mission-facts span,
+.hint-box span,
+.dope-grid span,
+.score-strip span,
+.report-grid span,
+.turret-dial span,
+.turret-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.kicker {
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+h1 {
+  font-size: clamp(2.05rem, 4.5vw, 3.35rem);
+  line-height: 0.95;
+}
+
+h2 { font-size: clamp(1.2rem, 2.2vw, 1.8rem); }
+h3 { font-size: 1.08rem; }
+
+.topbar-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(88px, 1fr));
+  gap: 10px;
+}
+.topbar-strip div,
+.mission-facts div,
+.dope-grid div,
+.score-strip div,
+.report-grid div {
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: 14px;
+  padding: 11px 12px;
+}
+.topbar-strip strong,
+.mission-facts strong,
+.dope-grid strong,
+.score-strip strong,
+.report-grid strong,
+.scope-hud strong {
+  display: block;
+  margin-top: 6px;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.78fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.scope-card,
+.mission-card,
+.dope-card,
+.turret-card,
+.fire-card,
+.report-card {
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.scope-head,
+.panel-head,
+.mission-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+.scope-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.tag,
+.ghost-button,
+.primary-button,
+.turret-btn {
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+.tag {
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  padding: 8px 12px;
+  font-size: 0.88rem;
+}
+.ghost-button,
+.primary-button,
+.turret-btn {
+  cursor: pointer;
+  color: var(--text);
+  background: var(--panel-3);
+  padding: 11px 14px;
+}
+.primary-button {
+  color: #16120f;
+  font-weight: 700;
+  background: linear-gradient(180deg, #e0c08d, #c69b5d);
+  border-color: rgba(0,0,0,0.18);
+}
+.ghost-button:hover,
+.primary-button:hover,
+.turret-btn:hover { filter: brightness(1.06); }
+.fire-button.armed { transform: scale(0.994); }
+
+.scope-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: #080808;
+}
+.scene-image,
+#scopeCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.scene-image {
+  object-fit: cover;
+  transform-origin: center center;
+  will-change: transform;
+}
+.scope-hud {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 2;
+}
+.scope-hud-top { top: 16px; }
+.scope-hud-bottom { bottom: 16px; }
+.scope-hud div {
+  min-width: 0;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(15, 13, 11, 0.68);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  padding: 9px 11px;
+}
+.scope-controls {
+  position: absolute;
+  top: 96px;
+  right: 18px;
+  z-index: 2;
+  display: grid;
+  gap: 10px;
+}
+.zoom-strip,
+.scope-lockbox {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(15, 13, 11, 0.72);
+  backdrop-filter: blur(4px);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.zoom-buttons {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.zoom-btn {
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  padding: 7px 12px;
+}
+.zoom-btn.active {
+  background: linear-gradient(180deg, #e0c08d, #c69b5d);
+  color: #16120f;
+  border-color: rgba(0,0,0,0.18);
+}
+.scope-lockbox strong,
+.scope-lockbox small {
+  display: block;
+}
+.scope-lockbox strong {
+  margin-top: 6px;
+  font-family: "IBM Plex Mono", monospace;
+}
+.scope-lockbox small {
+  margin-top: 4px;
+  color: var(--muted);
+}
+.scope-tip {
+  position: absolute;
+  left: 50%;
+  bottom: 82px;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(15, 13, 11, 0.72);
+  color: var(--muted);
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.mission-card {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 12px;
+}
+.mission-copy,
+.hint-box p,
+.mini-note p,
+.breath-copy,
+.report-copy {
+  color: var(--muted);
+  line-height: 1.48;
+}
+.mission-facts,
+.dope-grid,
+.score-strip,
+.report-grid {
+  display: grid;
+  gap: 10px;
+}
+.mission-facts { grid-template-columns: repeat(2, 1fr); }
+.hint-stack { display: grid; gap: 10px; }
+.hint-box,
+.mini-note {
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.cockpit-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1.1fr 0.8fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.dope-grid { grid-template-columns: repeat(2, 1fr); }
+
+.turret-grid {
+  display: grid;
+  gap: 14px;
+}
+.turret-module {
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: 16px;
+  padding: 14px;
+}
+.turret-label {
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+.turret-controls {
+  display: grid;
+  grid-template-columns: 78px 78px minmax(130px, 1fr) 78px 78px;
+  gap: 8px;
+  align-items: center;
+}
+.turret-dial {
+  height: 104px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255,255,255,0.07), transparent 40%),
+    linear-gradient(180deg, #2d2621, #201b17);
+}
+.turret-dial strong {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1.04rem;
+}
+.turret-dial small {
+  color: var(--muted);
+}
+.turret-btn {
+  padding: 12px 8px;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.breath-meter {
+  position: relative;
+  height: 124px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(136,184,214,0.08), rgba(255,255,255,0.03));
+}
+.breath-zone {
+  position: absolute;
+  inset: 46% 0 auto;
+  height: 18%;
+  background: rgba(136, 175, 119, 0.3);
+  border-top: 1px solid rgba(184, 220, 169, 0.85);
+  border-bottom: 1px solid rgba(184, 220, 169, 0.85);
+}
+.breath-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #f1ce98;
+  box-shadow: 0 0 18px rgba(241, 206, 152, 0.5);
+}
+.breath-copy { margin: 8px 0 12px; }
+.score-strip { grid-template-columns: repeat(3, 1fr); margin-top: 12px; }
+.report-card { margin-top: 14px; }
+.report-grid { grid-template-columns: repeat(4, 1fr); }
+.shot-log {
+  margin-top: 10px;
+  padding-left: 18px;
+  color: var(--muted);
+}
+.shot-log li + li { margin-top: 7px; }
+.shot-log strong { color: var(--text); }
+
+@media (max-width: 1320px) {
+  .hero-grid,
+  .cockpit-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .shell { width: min(100vw - 12px, 1540px); }
+  .topbar { flex-direction: column; align-items: start; }
+  .topbar-strip,
+  .mission-facts,
+  .dope-grid,
+  .score-strip,
+  .report-grid { grid-template-columns: 1fr 1fr; }
+  .scope-hud { position: static; margin-top: 10px; flex-direction: column; }
+  .scope-tip, .scope-controls { display: none; }
+  .turret-controls { grid-template-columns: 1fr 1fr; }
+  .turret-dial { grid-column: 1 / -1; border-radius: 18px; height: auto; padding: 14px; }
+}
+
+@media (max-width: 640px) {
+  .topbar-strip,
+  .mission-facts,
+  .dope-grid,
+  .score-strip,
+  .report-grid { grid-template-columns: 1fr; }
+}
